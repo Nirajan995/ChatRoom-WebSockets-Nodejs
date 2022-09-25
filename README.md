@@ -14,8 +14,8 @@ To set up code formatting,
 # To initiate local server
 
 On Root Folder:
-Install Dependencies: npm install
-Run with dev config: npm run dev
+- Install Dependencies: npm install
+- Run with dev config: npm run dev
 
 # Tested Environment
 
