@@ -1,11 +1,22 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const path = require('path');
+const http = require('http');
+const socketIO = require('socket.io');
 
 const app = express();
 
-//Set static folder
+const server = http.createServer(app);
+const io = socketIO(server);
+
+// Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Run when client connects
+io.on('connection', (socket) => {
+  console.log('New web socket connection');
+  socket.emit('message', 'Welcome to chatcord');
+});
 
 const PORT = 3000 || process.env.PORT;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
