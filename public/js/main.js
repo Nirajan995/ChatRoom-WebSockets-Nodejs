@@ -3,6 +3,15 @@ const socket = io();
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 
+const { username, room } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+});
+
+// Join chatroom
+socket.emit('joinRoom', {
+  username, room,
+});
+
 socket.on('message', (message) => {
   outputMessage(message);
 
@@ -10,7 +19,7 @@ socket.on('message', (message) => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
-// Message submit
+// Message send
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -24,12 +33,12 @@ chatForm.addEventListener('submit', (e) => {
   e.target.elements.msg.focus();
 });
 
-function outputMessage(message) {
+function outputMessage(obj) {
   const div = document.createElement('div');
   div.classList.add('message');
-  div.innerHTML = `<p class="meta">Brad <span>9:12pm</span></p>
+  div.innerHTML = `<p class="meta">${obj.userName} <span>${obj.time}</span></p>
   <p class="text">
-    ${message}
+    ${obj.text}
   </p>`;
   document.querySelector('.chat-messages').appendChild(div);
 }
